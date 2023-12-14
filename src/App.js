@@ -1,25 +1,39 @@
-import logo from './logo.svg';
 import './App.css';
+import Layout from "./Components/Layout/Layout";
+import {Outlet} from "react-router-dom";
+import {createContext, useState} from "react";
+
+export const ThemeContext = createContext(null)
+
+
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+    const [theme, setTheme] = useState("light");
+
+    // const theme = useRef("light");
+
+
+    const toggleTheme = ()=>{
+        if(theme === "light"){
+            // theme.current = "dark";
+            setTheme("dark");
+            document.documentElement.setAttribute("data-theme", "dark");
+        }else {
+            // theme.current = "light";
+            setTheme("light");
+            document.documentElement.setAttribute("data-theme", "light");
+        }
+    }
+
+
+    return (
+        <ThemeContext.Provider value={{theme, toggleTheme}}>
+            <Layout>
+                <Outlet/>
+            </Layout>
+        </ThemeContext.Provider>
+    );
 }
 
 export default App;
