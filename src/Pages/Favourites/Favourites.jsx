@@ -1,22 +1,15 @@
 import React, {useEffect, useState} from 'react';
 import Users from "../../Components/Users/Users";
+import {useSelector} from "react-redux";
 
 const Favourites = () => {
 
-    const [users, setUsers] = useState([]);
-    const [isDelete, setIsDelete] = useState({});
-
-
-
-    useEffect(() => {
-        setUsers(localStorage.getItem("FavouriteUsers") ? JSON.parse(localStorage.getItem("FavouriteUsers")) : [])
-    }, [isDelete])
-
+    const {favourites} = useSelector(state => state['favouritesReducer']);
 
     return (
         <div>
             <h1>Favourites</h1>
-            <Users setIsDelete={setIsDelete} users={users}/>
+            <Users  users={favourites}/>
         </div>
     );
 };

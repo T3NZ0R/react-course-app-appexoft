@@ -1,26 +1,24 @@
 import React, {useState} from 'react';
 import {Link, useLocation} from "react-router-dom";
+import {useDispatch} from "react-redux";
+import {addToFavourites, removeFromFavourites} from "../../store/favourites.slice";
 
-const User = ({user, setIsDelete}) => {
+const User = ({user}) => {
     const {name, username, email, id} = user;
 
     const {pathname} = useLocation()
 
-    const [disable, setDisable] = useState(false)
+    const [disable, setDisable] = useState(false);
+
+    const dispatch = useDispatch()
 
     const handleAddToFavourites = () => {
-        let favouriteUsers = localStorage.getItem("FavouriteUsers") ? JSON.parse(localStorage.getItem("FavouriteUsers")) : [];
-        localStorage.setItem("FavouriteUsers", JSON.stringify([...favouriteUsers, user]));
+        dispatch(addToFavourites(user))
         setDisable(!disable);
     }
 
     const handleDeleteFromFavourites = () => {
-        let favouriteUsers = localStorage.getItem("FavouriteUsers") ? JSON.parse(localStorage.getItem("FavouriteUsers")) : [];
-
-        favouriteUsers = favouriteUsers.filter(item => item.id !== id);
-        setIsDelete(user)
-
-        localStorage.setItem("FavouriteUsers", JSON.stringify([...favouriteUsers]));
+        dispatch(removeFromFavourites(user.id))
     }
 
     return (

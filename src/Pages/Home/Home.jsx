@@ -1,20 +1,26 @@
-import React, {useEffect, useState} from 'react';
-import {userService} from "../../Services/user.service";
+import React, {useEffect} from 'react';
 import Users from "../../Components/Users/Users";
+import {getAllUsers} from "../../store/users.slice";
+import {useDispatch, useSelector} from "react-redux";
 
 const Home = () => {
 
-    const [users, setUsers] = useState([])
+    const {state} = useSelector(state => state['usersReducer']);
+
+    console.log(state);
+
+    const dispatch = useDispatch();
 
     useEffect(() => {
-        userService.getUsers().then(value => setUsers(value))
-    }, [])
+        dispatch(getAllUsers())
+
+    }, [dispatch])
 
 
     return (
         <div>
             <h1>Home</h1>
-            <Users users={users}/>
+            <Users users={state}/>
         </div>
     );
 };
