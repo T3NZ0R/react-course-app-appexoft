@@ -1,38 +1,37 @@
-import { createAsyncThunk, createSlice} from "@reduxjs/toolkit";
+import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {userService} from "../Services/user.service";
 
 export const getAllUsers = createAsyncThunk(
-    'userSlice/getAllUsers',
+    "usersSlice/getAllUsers",
     async () => {
-        try {
-            return await userService.getUsers();
-        } catch (e) {
-            console.log(e)
-        }
+        return await userService.getUsers();
     }
-)
+);
 
 const usersSlice = createSlice({
     name: "usersSlice",
     initialState: {
-        users: ["qweqwe"],
+        users: [],
         status: null,
-        error: null
+        error: null,
     },
+    reducers: {},
     extraReducers: (builder) => {
         builder.addCase(getAllUsers.pending, (state) => {
-            state.status = 'Loading...';
+            state.status = "Loading...";
             state.error = null;
-        }).addCase(getAllUsers.fulfilled, (state, action) => {
-            state.status = 'Loading finished!';
-            state.users = action.payload;
-            console.log(state.users);
-        }).addCase(getAllUsers.rejected, (state) => {
-            state.status = 'rejected';
-            state.error = 'error';
         })
-    }
-})
+            .addCase(getAllUsers.fulfilled, (state, action) => {
+                state.users = action.payload;
+                console.log(state);
+                state.status = "Loading finished!";
+            })
+            .addCase(getAllUsers.rejected, (state) => {
+                state.status = "rejected";
+                state.error = "Failed to fetch users";
+            });
+    },
+});
 
-const userReducer = usersSlice.reducer;
-export {userReducer};
+const usersReducer = usersSlice.reducer;
+export {usersReducer};
